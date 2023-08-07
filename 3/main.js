@@ -1,5 +1,4 @@
 let prom = prompt("Введите число: ", '')
-console.log(typeof(prom));
 
 function chet_neChet(num) {
     number = num 
