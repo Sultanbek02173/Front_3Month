@@ -9,6 +9,7 @@ input.addEventListener('change', (event) =>{
 })
 
 button.onclick = () =>{
+    div.innerHTML = "";
     for (i = 0; i < count; i++){
         if (i < 10){
             element = document.createElement('div');
