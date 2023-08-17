@@ -12,7 +12,7 @@ class Person {
 
 let person = new Person("Sultan", "Bekjanov");
 
-person.print()
+// person.print()
 
 
 
@@ -28,11 +28,18 @@ class User extends Person {
         this.#password = password;
     }
 
-    print() {
-        console.log(this.name, this.surname, this.#password);
+    print(password1) {
+        if (password1 === this.#password){
+            console.log(this.name, this.surname, this.#password);
+        } 
+        else{
+            console.log("Неправильный пароль");
+        }
     }
 }
 
 let user = new User("Mails", "Maikl", 12121);
 
-user.print()
+user.print(12121)
+
+
