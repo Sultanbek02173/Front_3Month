@@ -10,7 +10,7 @@ let betweenWord = /@\b\w\w\w+\b.com/;
 btn.onclick = () =>{
     divError.innerHTML = "";
     if (regax.test(input.value) === true && login.test(input.value) === true && beforeReg.test(input.value) === true && betweenWord.test(input.value) === true){
-        alert("hello")
+        alert("Вы успешно зарегистрировались!")
         input.classList.replace("inputAfter", "inputBl");
     }
     else{
