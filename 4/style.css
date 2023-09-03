@@ -1,0 +1,32 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.container {
+    margin: 20px auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 1400px;
+    height: 300px;
+}
+
+.item{
+    border: 2px solid rgb(255, 162, 2);
+    width: 22%;
+    height: 100%;
+    margin-top: 50px;
+}
+
+.item h2{
+    text-align: center;
+    padding: 15px 0;
+}
+
+.item p{
+    font-size: 18px;
+    padding-left: 35px;
+    line-height: 35px;
+}
