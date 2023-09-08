@@ -184,10 +184,10 @@
       const userName = userNameEl.value;
       const userAge = userAgeEl.value;
       
-      if (userName === '' || textName.test(userName) === true){
+      if (userName === ''){
         userAgeEl.style.cssText = "";
         userNameEl.style.cssText = "border: 1px solid red";
-      }else if(userAge === '' || textAge.test(userAge) === true){
+      }else if(userAge === ''){
         userNameEl.style.cssText = "";
         userAgeEl.style.cssText = "border: 1px solid red";
       }
