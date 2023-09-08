@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+      
+  <meta charset="utf-8" />
+      
+  <meta name="viewport" content="width=device-width" />
+      
+  <title>Список пользователей</title>
+      
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+
+  <style>
+    .modal_shell {
+      width: 100vw;
+      height: 100vh;
+      position: fixed;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      top: 0;
+      left: 0;
+      display: flex;
+    }
+
+    .modal_overlay {
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.5);
+      position: absolute;
+      z-index: 2;
+    }
+
+    .modals {
+      width: 30vw;
+      height: 50vh;
+      border-radius: 20px;
+      background-color: #ccc;
+      padding: 30px;
+      position: relative;
+      top: 0;
+      left: 0;
+      z-index: 5;
+    }
+
+    .hide {
+      display: none !important;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h2>Список пользователей</h2>
+    <form name="userForm" id="userForm">
+      <div class="form-group">
+         <label for="name">Имя:</label>
+        <input class="form-control" name="name" id="userName" />
+      </div>
+      <div class="form-group">
+          <label for="age">Возраст:</label>
+        <input class="form-control" name="age" id="userAge" />
+      </div>
+      <div class="panel-body">
+        <button type="submit" class="btn btn-sm btn-primary">Сохранить</button>
+        <a id="reset" class="btn btn-sm btn-primary">Сбросить</a>
+      </div>
+    </form>
+    <table class="table table-condensed table-striped table-bordered">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Имя</th>
+          <th>возраст</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <div class="modal_shell hide" id="modal_shell">
+    <div class="modal_overlay" id="modal_overlay"></div>
+    <div class="modals">
+      <form id="change-form">
+        <input type="text" id="change-name" name="changeName" placeholder="Type your name" />
+        <hr />
+        <input type="text" id="change-age" name="changeAge" placeholder="Type your age" />
+        <hr />
+        <button type="submit">Press</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const createFormEl = document.getElementById("userForm");
+    const userAgeEl = document.getElementById("userAge");
+    const userNameEl = document.getElementById("userName");
+    const resetEl = document.getElementById("reset");
+    const userEditFormEl = document.getElementById("change-form");
+    const editUserNameEl = document.getElementById("change-name");
+    const editUserAgeEl = document.getElementById("change-age");
+    const modalShellEl = document.getElementById("modal_shell");
+    const modalOverlayEl = document.getElementById("modal_overlay");
+
+    const tableBodyEl = document.querySelector("tbody");
+
+    const apiUrl = '/api/users';
+
+    console.log(createFormEl);
+    console.log(userAgeEl);
+    console.log(userNameEl);
+    console.log(resetEl);
+    console.log(userEditFormEl);
+    console.log(editUserNameEl);
+    console.log(editUserAgeEl);
+    console.log(modalShellEl);
+    console.log(modalOverlayEl);
+    console.log(tableBodyEl);
+
+
+    let users = [];
+
+    const renderUsers = (userList) => {
+      let renderUserList = '';
+
+      for (let user of userList) {
+        renderUserList += row(user);
+      }
+
+      tableBodyEl.innerHTML = renderUserList;
+    };
+
+    const getUser = async () => {
+      const responce = await fetch(apiUrl);
+      const data = await responce.json();
+
+      users = [...data];
+      renderUsers(users);
+    };
+
+    const createUser = async (name, age) => {
+      const options = {
+        method: "POST",
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify({ name, age }),
+      };
+
+      const responce = await fetch(apiUrl, options);
+      const data = await responce.json();
+
+      users = [...users, data];
+      renderUsers(users);
+    }
+
+    const onDeleteClick = async (event) => {
+      if (event.target.dataset.action === "delete") {
+        const userID = event.target.parentElement.id;
+        await deleteUser(userID);
+      } else if (event.target.dataset.action === "edit") {
+        const userID = event.target.parentElement.id;
+        await changeUser(userID);
+      }
+      return;
+    };
+
+    const deleteUser = async (id) => {
+      const options = {
+        method: 'DELETE',
+      };
+
+      await fetch(`${apiUrl}/${id}`, options);
+      document.getElementById(id).parentElement.remove();
+      createFormEl.reset();
+
+    }
+
+    const onCreateSubmit = async (event) => {
+      event.preventDefault();
+
+      const userName = userNameEl.value;
+      const userAge = userAgeEl.value;
+      
+      if (userName === '' || textName.test(userName) === true){
+        userAgeEl.style.cssText = "";
+        userNameEl.style.cssText = "border: 1px solid red";
+      }else if(userAge === '' || textAge.test(userAge) === true){
+        userNameEl.style.cssText = "";
+        userAgeEl.style.cssText = "border: 1px solid red";
+      }
+      else{
+        userNameEl.style.cssText = "";
+        userAgeEl.style.cssText = "";
+        await createUser(userName, userAge);
+        createFormEl.reset();
+      }
+      
+    };
+
+    const onCreateReset = () => {
+      createFormEl.reset();
+    };
+
+    const changeUser = async (id) => {
+      for (let index = 0; index < users.length; index++) {
+        const element = users[index];
+        if (element.id == id) {
+          console.log(element);
+          editUserNameEl.value = element.name;
+          editUserAgeEl.value = element.age;
+        }
+      }
+      modalShellEl.classList.remove("hide");
+      await deleteUser(id);
+    }
+
+    const OnChangeSubmit = async (event) => {
+      event.preventDefault();
+
+      const userName = editUserNameEl.value;
+      const userAge = editUserAgeEl.value;
+
+      if (userName === ''){
+        editUserAgeEl.style.cssText = "";
+        editUserNameEl.style.cssText = "border: 1px solid red";
+      }else if(userAge === ''){
+        editUserNameEl.style.cssText = "";
+        editUserAgeEl.style.cssText = "border: 1px solid red";
+      }else{
+        editUserNameEl.style.cssText = "";
+        editUserAgeEl.style.cssText = "";
+        await createUser(userName, userAge);
+        modalShellEl.classList.add("hide");
+  
+        createFormEl.reset();
+      }
+      
+    };
+
+    getUser();
+
+    createFormEl.addEventListener('submit', onCreateSubmit);
+    userEditFormEl.addEventListener('submit', OnChangeSubmit);
+    resetEl.addEventListener('click', onCreateReset);
+    tableBodyEl.addEventListener('click', onDeleteClick);
+
+    function row(user) {
+      const renderUser = `
+          <tr>
+            <td>${user.id}</td>
+            <td>${user.name}</td>
+            <td>${user.age}</td>
+            <td id="${user.id}">
+              <a href="javascript:void(0)" data-action="edit">Изменить</a>
+              <a href="javascript:void(0)" data-action="delete">Удалить</a>
+            </td>
+          </tr>
+        `;
+      return renderUser;
+    }
+  </script>
+</body>
+
+</html>
