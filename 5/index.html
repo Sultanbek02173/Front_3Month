@@ -140,6 +140,32 @@
       renderUsers(users);
     };
 
+    const onCreateSubmit = async (event) => {
+      event.preventDefault();
+
+      const userName = userNameEl.value;
+      const userAge = userAgeEl.value;
+
+      if (userName === '' && userAge === '') {
+        userAgeEl.style.cssText = "border: 1px solid red";
+        userNameEl.style.cssText = "border: 1px solid red";
+      } else if (userAge === '') {
+        userNameEl.style.cssText = "";
+        userAgeEl.style.cssText = "border: 1px solid red";
+      }
+      else if (userName === '') {
+        userNameEl.style.cssText = "border: 1px solid red";
+        userAgeEl.style.cssText = "";
+      }
+      else {
+        userNameEl.style.cssText = "";
+        userAgeEl.style.cssText = "";
+        await createUser(userName, userAge);
+        createFormEl.reset();
+      }
+
+    };
+
     const createUser = async (name, age) => {
       const options = {
         method: "POST",
@@ -154,7 +180,11 @@
 
       users = [...users, data];
       renderUsers(users);
-    }
+    };
+
+    const onCreateReset = () => {
+      createFormEl.reset();
+    };
 
     const onDeleteClick = async (event) => {
       if (event.target.dataset.action === "delete") {
@@ -178,67 +208,60 @@
 
     }
 
-    const onCreateSubmit = async (event) => {
+    const OnChangeSubmit = async (event) => {
       event.preventDefault();
 
-      const userName = userNameEl.value;
-      const userAge = userAgeEl.value;
-      
-      if (userName === ''){
-        userAgeEl.style.cssText = "";
-        userNameEl.style.cssText = "border: 1px solid red";
-      }else if(userAge === ''){
-        userNameEl.style.cssText = "";
-        userAgeEl.style.cssText = "border: 1px solid red";
-      }
-      else{
-        userNameEl.style.cssText = "";
-        userAgeEl.style.cssText = "";
-        await createUser(userName, userAge);
-        createFormEl.reset();
-      }
-      
-    };
+      const options = {
+        method: 'PUTCH',
+      };
 
-    const onCreateReset = () => {
-      createFormEl.reset();
+      const userName = editUserNameEl.value;
+      const userAge = editUserAgeEl.value;
+
+      if (userName === '' && userAge === '') {
+        editUserAgeEl.style.cssText = "border: 1px solid red";
+        editUserNameEl.style.cssText = "border: 1px solid red";
+      } else if (userAge === '') {
+        editUserNameEl.style.cssText = "";
+        editUserAgeEl.style.cssText = "border: 1px solid red";
+      } else if (userName === '') {
+        editUserNameEl.style.cssText = "border: 1px solid red";
+        editUserAgeEl.style.cssText = "";
+      }
+      else {
+        editUserNameEl.style.cssText = "";
+        editUserAgeEl.style.cssText = "";
+
+        for (let index = 0; index < users.length; index++) {
+          const element = users[index];
+          if (element.name === "") {
+            element.name = userName;
+            element.age = userAge;
+          }
+        }
+
+        users = [...users];
+        renderUsers(users);
+        createFormEl.reset();
+        modalShellEl.classList.add("hide");
+      };
     };
 
     const changeUser = async (id) => {
       for (let index = 0; index < users.length; index++) {
         const element = users[index];
         if (element.id == id) {
-          console.log(element);
           editUserNameEl.value = element.name;
           editUserAgeEl.value = element.age;
+          element.name = '';
+          element.age = '';
+          console.log(element.name);
         }
       }
       modalShellEl.classList.remove("hide");
-      await deleteUser(id);
     }
 
-    const OnChangeSubmit = async (event) => {
-      event.preventDefault();
 
-      const userName = editUserNameEl.value;
-      const userAge = editUserAgeEl.value;
-
-      if (userName === ''){
-        editUserAgeEl.style.cssText = "";
-        editUserNameEl.style.cssText = "border: 1px solid red";
-      }else if(userAge === ''){
-        editUserNameEl.style.cssText = "";
-        editUserAgeEl.style.cssText = "border: 1px solid red";
-      }else{
-        editUserNameEl.style.cssText = "";
-        editUserAgeEl.style.cssText = "";
-        await createUser(userName, userAge);
-        modalShellEl.classList.add("hide");
-  
-        createFormEl.reset();
-      }
-      
-    };
 
     getUser();
 
