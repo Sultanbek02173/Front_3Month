@@ -107,6 +107,12 @@
     const tableBodyEl = document.querySelector("tbody");
 
     const apiUrl = '/api/users';
+    let changeuserinfo = {
+      id: null,
+      name: null,
+      age: null
+    }
+
 
     console.log(createFormEl);
     console.log(userAgeEl);
@@ -211,13 +217,11 @@
     const OnChangeSubmit = async (event) => {
       event.preventDefault();
 
-      const options = {
-        method: 'PUTCH',
-      };
+
 
       const userName = editUserNameEl.value;
       const userAge = editUserAgeEl.value;
-
+     
       if (userName === '' && userAge === '') {
         editUserAgeEl.style.cssText = "border: 1px solid red";
         editUserNameEl.style.cssText = "border: 1px solid red";
@@ -231,14 +235,30 @@
       else {
         editUserNameEl.style.cssText = "";
         editUserAgeEl.style.cssText = "";
+let id = null
 
         for (let index = 0; index < users.length; index++) {
           const element = users[index];
           if (element.name === "") {
+id = index
             element.name = userName;
             element.age = userAge;
           }
         }
+        const options = {
+          method: 'PUT',
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            id:id+1,
+            name: userName,
+            age: userAge
+          })
+        }
+        await fetch(apiUrl ,options).then((response) => {
+          console.log(response)
+        })
 
         users = [...users];
         renderUsers(users);
@@ -261,8 +281,6 @@
       modalShellEl.classList.remove("hide");
     }
 
-
-
     getUser();
 
     createFormEl.addEventListener('submit', onCreateSubmit);
@@ -277,8 +295,8 @@
             <td>${user.name}</td>
             <td>${user.age}</td>
             <td id="${user.id}">
-              <a href="javascript:void(0)" data-action="edit">Изменить</a>
-              <a href="javascript:void(0)" data-action="delete">Удалить</a>
+              <a href="javascript:void(0)"  data-action="edit">Изменить</a>
+              <a href="javascript:void(0)" data-action="delete">Удалить</a>   
             </td>
           </tr>
         `;
