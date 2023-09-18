@@ -1,0 +1,132 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,200&display=swap');
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body,
+head {
+    height: 100vh;
+}
+
+body {
+    font-family: 'Nunito', sans-serif;
+    background-repeat: no-repeat;
+    background: linear-gradient(45deg, rgb(1, 213, 250), rgb(119, 1, 210) 60%, rgb(246, 0, 217)) no-repeat fixed;
+}
+
+.form {
+    display: flex;
+    justify-content: center;
+    padding-top: 45px;
+}
+
+.form_reg {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 30vw;
+    height: 35vw;
+    border-radius: 12px;
+    box-shadow: 0px 1px 44px 23px rgba(0, 52, 92, 0.2);
+    background-color: white;
+}
+
+.form h2 {
+    margin: 24px 0 32px 0;
+    text-align: center;
+}
+
+.form label {
+    padding-left: 16px;
+    opacity: 0.75;
+}
+
+.form input {
+    display: flex;
+    border-radius: 50px;
+    border-style: none;
+    outline: none;
+    margin-top: 8px;
+    padding: 12px 24px;
+    width: 250px;
+    background-color: rgb(221, 228, 240);
+}
+
+.form input:focus {
+    opacity: 0.7;
+}
+
+.form button {
+    padding: 12px 48px;
+    border-radius: 50px;
+    color: white;
+    margin-top: 40px;
+    cursor: pointer;
+    outline: none;
+    border-width: 0;
+    background-color: black;
+    font-weight: 600;
+    width: 100%;
+}
+
+.form button:hover {
+    opacity: 0.8;
+}
+
+.bottom {
+    display: flex;
+    justify-content: center;
+    margin-top: 38px;
+}
+
+.list {
+    width: 30vw;
+    height: 50vh;
+    margin: 100px auto;
+}
+
+
+.list-rectangle {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.list-rectangle a{
+    text-decoration: none;
+    list-style: none;
+    color: #fff;
+    position: absolute;
+    right: 0;
+    transition: all 0.5s;
+}
+
+.list-rectangle a:hover{
+    color: #4CC8FD;
+}
+
+.list-rectangle>li {
+    position: relative;
+    display: block;
+    margin-bottom: .25rem;
+    padding: .325rem .825rem .325rem 1.325rem;
+    color: #fff;
+    background: #005980;
+}
+
+.list-rectangle>li:last-child {
+    margin-bottom: 0;
+}
+
+.list-rectangle>li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 0.5rem;
+    background: #4CC8FD;
+}
