@@ -22,3 +22,8 @@ btn.onclick = () =>{
     }
 
 }
+
+// let userInput = "12d34";
+// let isNumber = !isNaN(Number(userInput));
+
+// console.log(isNumber);

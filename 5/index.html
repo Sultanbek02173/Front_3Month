@@ -155,7 +155,7 @@
       if (userName === '' && userAge === '') {
         userAgeEl.style.cssText = "border: 1px solid red";
         userNameEl.style.cssText = "border: 1px solid red";
-      } else if (userAge === '') {
+      } else if (userAge === '' || !isNaN(Number(userAge)) === false) {
         userNameEl.style.cssText = "";
         userAgeEl.style.cssText = "border: 1px solid red";
       }
@@ -225,7 +225,7 @@
       if (userName === '' && userAge === '') {
         editUserAgeEl.style.cssText = "border: 1px solid red";
         editUserNameEl.style.cssText = "border: 1px solid red";
-      } else if (userAge === '') {
+      } else if (userAge === '' || !isNaN(Number(userAge)) === false) {
         editUserNameEl.style.cssText = "";
         editUserAgeEl.style.cssText = "border: 1px solid red";
       } else if (userName === '') {
